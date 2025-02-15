@@ -23,7 +23,7 @@ public class GatewayConfig {
                         .path("/api/v1/auth/**")
                         .uri("lb://AUTH-SERVICE"))
                 .route("user-service", r -> r
-                        .path("/api/v1/user/**")
+                        .path("/api/v1/users/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
                         .uri("lb://USER-SERVICE"))
                 .build();

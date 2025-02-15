@@ -26,14 +26,9 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
     private static final Map<String, Set<HttpMethod>> PUBLIC_PATHS = new HashMap<>();
 
     static {
-        // Paths that are public for all methods
         PUBLIC_PATHS.put("/api/v1/auth/login", Set.of(HttpMethod.values()));
         PUBLIC_PATHS.put("/api/v1/auth/register", Set.of(HttpMethod.values()));
-        PUBLIC_PATHS.put("/api/v1/auth/refresh", Set.of(HttpMethod.values()));
-        PUBLIC_PATHS.put("/health", Set.of(HttpMethod.values()));
-        PUBLIC_PATHS.put("/actuator/health", Set.of(HttpMethod.values()));
-
-        // Paths that are public only for specific methods
+        PUBLIC_PATHS.put("/api/v1/auth/token/refresh/", Set.of(HttpMethod.values()));
         PUBLIC_PATHS.put("/api/v1/business", Set.of(HttpMethod.GET));
     }
 
