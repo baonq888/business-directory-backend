@@ -1,13 +1,16 @@
-package com.where.auth.dto.request;
+package com.where.auth.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppUserDTO {
+public class UserCreateEvent {
     private Long id;
     private String name;
     private String username;
-    private String password;
+    Set<String> roles;
 }
+

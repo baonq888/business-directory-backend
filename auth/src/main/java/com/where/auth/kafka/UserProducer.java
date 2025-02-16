@@ -1,6 +1,5 @@
 package com.where.auth.kafka;
 
-import com.where.auth.dto.request.AppUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,13 +12,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class UserProducer {
-    private final KafkaTemplate<String, AppUserDTO> kafkaTemplate;
-    public void sendOrderConfirmation(AppUserDTO appUserDTO) {
-        log.info("Sending order confirmation");
-        Message<AppUserDTO> message = MessageBuilder
-                .withPayload(appUserDTO)
-                .setHeader(KafkaHeaders.TOPIC,"user-topic")
+    private final KafkaTemplate<String, UserCreateEvent> kafkaTemplate;
+    public void sendAppUser(UserCreateEvent userCreateEvent) {
+        log.info("Sending user create message");
+        Message<UserCreateEvent> message = MessageBuilder
+                .withPayload(userCreateEvent)
+                .setHeader(KafkaHeaders.TOPIC,"user-create-topic")
                 .build();
         kafkaTemplate.send(message);
     }
+
 }

@@ -3,8 +3,6 @@ package com.where.auth.controller;
 import com.where.auth.entity.AppUser;
 import com.where.auth.entity.Role;
 import com.where.auth.service.AuthService;
-import org.springframework.stereotype.Controller;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -38,6 +36,12 @@ public class AuthController {
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
+    }
+
+    @PostMapping("/user/role/add")
+    public ResponseEntity<String> addBusinessOwnerRoleToUser(@RequestBody String username) {
+        userService.addBusinessOwnerRoleToUser(username);
+        return ResponseEntity.ok("Add role successfully");
     }
 
     @GetMapping("/token/refresh")

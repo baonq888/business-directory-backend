@@ -18,6 +18,3 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.trusted.packages: '*'
-application:
-  config:
-    user-url: http://localhost:8222/api/v1/users

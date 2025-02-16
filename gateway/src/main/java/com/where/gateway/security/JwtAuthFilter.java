@@ -53,18 +53,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
             try {
                 String token = extractAndValidateToken(request);
-                String userId = jwtUtil.extractUsername(token);
-                List<String> userRoles = jwtUtil.extractRoles(token);
-
-                // Add user context to headers
-                ServerHttpRequest modifiedRequest = request.mutate()
-                        .headers(headers -> {
-                            headers.add("X-User-ID", userId);
-                            headers.add("X-User-Roles", String.join(",", userRoles));
-                        })
-                        .build();
-
-                return chain.filter(exchange.mutate().request(modifiedRequest).build());
+                return chain.filter(exchange);
 
             } catch (AuthenticationException e) {
                 logger.warn("Authentication failed for path: {}, reason: {}", path, e.getMessage());

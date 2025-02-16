@@ -8,9 +8,17 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaUserTopicConfig {
     @Bean
-    public NewTopic orderTopic() {
+    public NewTopic userCreateTopic() {
         return TopicBuilder
-                .name("user-topic")
+                .name("user-create-topic")
                 .build();
     }
+
+    @Bean
+    public NewTopic userRoleUpdateTopic() {
+        return TopicBuilder
+                .name("user-role-update-topic")
+                .build();
+    }
+
 }
