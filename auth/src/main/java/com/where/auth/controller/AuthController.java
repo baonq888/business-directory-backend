@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/auth/register").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
@@ -58,7 +58,7 @@ public class AuthController {
                 AppUser user = userService.getUser(username);
                 String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                 String access_token = JWT.create()
-                        .withSubject(user.getUsername())
+                        .withSubject(user.getEmail())
                         .withExpiresAt(new Date(System.currentTimeMillis()+10*60*1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles",user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))

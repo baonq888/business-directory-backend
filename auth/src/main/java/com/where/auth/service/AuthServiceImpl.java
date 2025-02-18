@@ -2,7 +2,6 @@ package com.where.auth.service;
 
 import com.where.auth.entity.AppUser;
 import com.where.auth.entity.Role;
-import com.where.auth.enums.AppUserRole;
 import com.where.auth.kafka.UserCreateEvent;
 import com.where.auth.kafka.UserProducer;
 import com.where.auth.kafka.UserRoleUpdateEvent;

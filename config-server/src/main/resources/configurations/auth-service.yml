@@ -25,3 +25,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.trusted.packages: '*'
+        spring.json.type.mapping: >
+          userCreateEvent:com.where.auth.kafka.UserCreateEvent,
+          userRoleUpdateEvent:com.where.auth.kafka.UserRoleUpdateEvent

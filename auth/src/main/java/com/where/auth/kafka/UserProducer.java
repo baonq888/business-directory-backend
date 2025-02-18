@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserProducer {
     private final KafkaTemplate<String, UserCreateEvent> kafkaTemplate;
+    private final KafkaTemplate<String, UserRoleUpdateEvent> kafkaRoleUpdateTemplate;
     public void sendAppUser(UserCreateEvent userCreateEvent) {
         log.info("Sending user create message");
         Message<UserCreateEvent> message = MessageBuilder
@@ -27,7 +28,7 @@ public class UserProducer {
                 .withPayload(userRoleUpdateEvent)
                 .setHeader(KafkaHeaders.TOPIC,"user-role-update-topic")
                 .build();
-        kafkaTemplate.send(message);
+        kafkaRoleUpdateTemplate.send(message);
     }
 
 }

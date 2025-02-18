@@ -3,6 +3,7 @@ package com.where.auth.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.where.auth.dto.request.LoginRequest;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,14 +35,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        log.info("Email is {}",email); log.info("Password is: {}",password);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                email,password
-        );
+        ObjectMapper objectMapper = new ObjectMapper();
+        LoginRequest loginRequest = null;
+        try {
+            loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
+            String email = loginRequest.getEmail();
+            String password = loginRequest.getPassword();
+            log.info("Email is {}",email); log.info("Password is: {}",password);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    email,password
+            );
 
-        return authenticationManager.authenticate(authenticationToken);
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
