@@ -5,6 +5,7 @@ import com.where.auth.entity.Role;
 import com.where.auth.enums.AppUserRole;
 import com.where.auth.kafka.UserCreateEvent;
 import com.where.auth.kafka.UserProducer;
+import com.where.auth.kafka.UserRoleUpdateEvent;
 import com.where.auth.repository.RoleRepository;
 import com.where.auth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,20 +40,20 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        AppUser user = userRepository.findByEmail(email);
         if (user == null) {
             log.error("user not found");
             throw new UsernameNotFoundException("user not found");
         } else {
-            log.info("user found {}",username);
+            log.info("user found {}",email);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 authorities
         );
@@ -60,13 +63,13 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     public AppUser saveUser(AppUser user) {
         log.info("Saving new user {} to database",user.getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByName(AppUserRole.USER.name())
+        Role userRole = roleRepository.findByName(com.where.enums.Role.USER.name())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         UserCreateEvent userCreateEvent = new UserCreateEvent(
                 user.getId(),
                 user.getName(),
-                user.getUsername(),
+                user.getEmail(),
                 Set.of(userRole.getName())
         );
         userProducer.sendAppUser(userCreateEvent);
@@ -75,9 +78,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
 
     @Override
-    public AppUser getUser(String username) {
-        log.info("Fetching user {}",username);
-        return userRepository.findByUsername(username);
+    public AppUser getUser(String email) {
+        log.info("Fetching user {}",email);
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -87,10 +90,21 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public void addBusinessOwnerRoleToUser(String username) {
-        AppUser user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(AppUserRole.BUSINESS_OWNER.name()).orElseThrow(() -> new RuntimeException("Role not found"));;
+    public void addBusinessOwnerRoleToUser(String email) {
+        AppUser user = userRepository.findByEmail(email);
+        Role role = roleRepository.findByName(com.where.enums.Role.BUSINESS_OWNER.name()).orElseThrow(() -> new RuntimeException("Role not found"));;
         user.getRoles().add(role);
+
+        Set<String> updatedRoleNames = user.getRoles()
+                .stream()
+                .map(Role::getName) // Assuming Role has a getName() method
+                .collect(Collectors.toSet());
+        UserRoleUpdateEvent userRoleUpdateEvent = new UserRoleUpdateEvent(
+                user.getEmail(),
+                updatedRoleNames
+        );
+        userProducer.sendUserRoleUpdate(userRoleUpdateEvent);
+
         userRepository.save(user);
     }
 

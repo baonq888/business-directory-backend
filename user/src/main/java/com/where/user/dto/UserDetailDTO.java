@@ -1,18 +1,14 @@
-package com.where.user.kafka;
+package com.where.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserRoleUpdateEvent {
-    private String email;
-    private Set<String> roles;
+public class UserDetailDTO {
+
 }

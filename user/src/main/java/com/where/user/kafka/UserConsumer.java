@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,7 @@ public class UserConsumer {
     private final RoleRepository roleRepository;
     @KafkaListener(topics = "user-create-topic", groupId = "user-service-group")
     public void consumeUserCreatedEvent(UserCreateEvent event) {
-        System.out.println("Received new user: " + event.getUsername());
+        System.out.println("Received new user: " + event.getEmail());
 
         // Fetch only existing roles from the database
         Set<Role> roles = event.getRoles().stream()
@@ -33,17 +31,26 @@ public class UserConsumer {
         UserDetail userDetail = new UserDetail();
         userDetail.setId(event.getId());
         userDetail.setName(event.getName());
-        userDetail.setUsername(event.getUsername());
+        userDetail.setEmail(event.getEmail());
         userDetail.setRoles(roles);
 
         userRepository.save(userDetail);
     }
 
     @KafkaListener(topics = "user-role-update-topic", groupId = "user-service-group")
-    public void consumeUserRoleUpdateEvent(UserCreateEvent event) {
+    public void consumeUserRoleUpdateEvent(UserRoleUpdateEvent event) {
+        UserDetail userDetail = userRepository.findByEmail(event.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Set<Role> roles = event.getRoles().stream()
+                .map(roleName -> roleRepository.findByName(roleName)
+                        .orElseGet(() -> roleRepository.save(new Role(roleName))))
+                .collect(Collectors.toSet());
 
-        // TODO: Update role for user
+        userDetail.setRoles(roles);
+
+        userRepository.save(userDetail);
+
     }
 
 }

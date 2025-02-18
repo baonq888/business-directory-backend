@@ -10,7 +10,7 @@ import java.util.Set;
 public class UserCreateEvent {
     private Long id;
     private String name;
-    private String username;
+    private String email;
     Set<String> roles;
 }
 

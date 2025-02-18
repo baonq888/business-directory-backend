@@ -19,7 +19,7 @@ public class UserDetail {
 
     @Id
     private Long id;
-    private String username;
+    private String email;
     private String name;
 
     private String address;
@@ -30,6 +30,5 @@ public class UserDetail {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
-
 
 }

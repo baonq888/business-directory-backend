@@ -22,4 +22,12 @@ public class UserProducer {
         kafkaTemplate.send(message);
     }
 
+    public void sendUserRoleUpdate(UserRoleUpdateEvent userRoleUpdateEvent) {
+        Message<UserRoleUpdateEvent> message = MessageBuilder
+                .withPayload(userRoleUpdateEvent)
+                .setHeader(KafkaHeaders.TOPIC,"user-role-update-topic")
+                .build();
+        kafkaTemplate.send(message);
+    }
+
 }

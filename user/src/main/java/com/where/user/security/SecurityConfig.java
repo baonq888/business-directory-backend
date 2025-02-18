@@ -1,8 +1,10 @@
 package com.where.user.security;
 
+import com.where.enums.Role;
 import com.where.user.filter.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,8 +24,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/save").permitAll()
-                        .requestMatchers("/users/**").hasRole("ADMIN") // Only users with ROLE_ADMIN can access
+                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole(Role.USER.name(), Role.BUSINESS_OWNER.name(), Role.ADMIN.name()) // Any authenticated user can get user by ID
+                        .requestMatchers(HttpMethod.PUT, "/users/{id}").hasAnyRole(Role.USER.name(), Role.BUSINESS_OWNER.name(), Role.ADMIN.name()) // Any authenticated user can update user
+                        .requestMatchers(HttpMethod.PATCH, "/users/{id}").hasAnyRole(Role.USER.name(), Role.BUSINESS_OWNER.name(), Role.ADMIN.name())
+                        .requestMatchers("/users/**").hasRole(Role.ADMIN.name()) // Other user endpoints require ADMIN role// Only users with ROLE_ADMIN can access
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

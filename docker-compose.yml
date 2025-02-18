@@ -29,9 +29,6 @@ services:
       - microservices-net
     restart: unless-stopped
 
-
-
-
   mail-dev:
     container_name: where-mail-dev
     image: maildev/maildev
@@ -40,7 +37,7 @@ services:
       - "1025:1025"
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
+    container_name: where_zookeeper
     environment:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 2181

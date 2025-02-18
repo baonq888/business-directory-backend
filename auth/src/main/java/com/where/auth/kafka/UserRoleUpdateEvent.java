@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class UserRoleUpdateEvent {
-    private String username;
-    private String role;
+    private String email;
+    private Set<String> roles;
 }
