@@ -61,9 +61,11 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     @Override
     public AppUser saveUser(AppUser user) {
         log.info("Saving new user {} to database",user.getName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByName(com.where.enums.Role.USER.name())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Set.of(userRole));
 
         UserCreateEvent userCreateEvent = new UserCreateEvent(
                 user.getId(),

@@ -30,6 +30,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
         PUBLIC_PATHS.put("/api/v1/auth/register", Set.of(HttpMethod.values()));
         PUBLIC_PATHS.put("/api/v1/auth/token/refresh/", Set.of(HttpMethod.values()));
         PUBLIC_PATHS.put("/api/v1/business", Set.of(HttpMethod.GET));
+        PUBLIC_PATHS.put("/api/v1/business/{id}", Set.of(HttpMethod.GET));
     }
 
     private final JwtUtil jwtUtil;
@@ -52,7 +53,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
             }
 
             try {
-                String token = extractAndValidateToken(request);
+                extractAndValidateToken(request);
                 return chain.filter(exchange);
 
             } catch (AuthenticationException e) {

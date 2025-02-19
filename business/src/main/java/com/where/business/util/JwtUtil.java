@@ -1,4 +1,4 @@
-package com.where.user.util;
+package com.where.business.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
