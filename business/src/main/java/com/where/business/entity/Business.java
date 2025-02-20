@@ -1,5 +1,6 @@
 package com.where.business.entity;
 
+import com.where.business.entity.location.District;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -20,9 +21,9 @@ public class Business {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private Long districtId;  // GeoNames district ID
+    private Long cityId;      // GeoNames city ID
+    private String countryCode; // GeoNames country code
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
     private List<Review> reviews;

@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8070
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -28,3 +28,5 @@ spring:
 #        spring.json.type.mapping: >
 #          userCreateEvent:com.where.auth.kafka.UserCreateEvent,
 #          userRoleUpdateEvent:com.where.auth.kafka.UserRoleUpdateEvent
+geonames:
+  username: baonq888

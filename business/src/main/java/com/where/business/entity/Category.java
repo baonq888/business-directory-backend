@@ -18,4 +18,7 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     private List<Business> businesses;
+
+    public Category(Long categoryId) {
+    }
 }
