@@ -1,11 +1,14 @@
-package com.where.business.dto.request;
+package com.where.business.kafka;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-public class BusinessCreateRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class BusinessEvent {
+    private Long id;
     private String name;
     private String description;
     private Long categoryId;
@@ -14,7 +17,4 @@ public class BusinessCreateRequest {
     private String countryCode;
     private String lat;
     private String lon;
-    private String phone;
-    private String email;
-    private String website;
 }

@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BusinessCreateRequest {
+public class BusinessSearchRequest {
+    private String text;
     private String name;
     private String description;
     private Long categoryId;
@@ -14,7 +15,7 @@ public class BusinessCreateRequest {
     private String countryCode;
     private String lat;
     private String lon;
-    private String phone;
-    private String email;
-    private String website;
+    private Integer page = 0;
+    private Integer limit = 10;
+    private String sortBy = "name";
 }

@@ -77,7 +77,7 @@ public class GeoNameServiceImpl implements GeoNameService {
                 .path("/searchJSON")
                 .queryParam("q", cityName)  // Search by city name
                 .queryParam("featureCode", "ADM2")  // Districts only
-                .queryParam("maxRows", "50")  // Increase limit
+                .queryParam("maxRows", "100")  // Increase limit
                 .queryParam("username", geonamesUsername)
                 .build()
                 .toUriString();

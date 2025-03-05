@@ -2,3 +2,11 @@ server:
   port: 8050
 geonames:
   username: baonq888
+spring:
+  cache:
+    type: redis
+redis:
+  host: where-redis
+  port: 6379
+  timeout: 5000
+  database: 0

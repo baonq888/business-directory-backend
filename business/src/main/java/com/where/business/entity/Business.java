@@ -24,6 +24,8 @@ public class Business {
     private Long districtId;  // GeoNames district ID
     private Long cityId;      // GeoNames city ID
     private String countryCode; // GeoNames country code
+    private String lat;
+    private String lon;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
     private List<Review> reviews;

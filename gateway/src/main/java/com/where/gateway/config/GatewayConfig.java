@@ -22,10 +22,17 @@ public class GatewayConfig {
                 .route("auth-service", r -> r
                         .path("/api/v1/auth/**")
                         .uri("lb://AUTH-SERVICE"))
+                .route("location-service", r -> r
+                        .path("/api/v1/location/**")
+                        .uri("lb://LOCATION-SERVICE"))
                 .route("user-service", r -> r
                         .path("/api/v1/users/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
                         .uri("lb://USER-SERVICE"))
+                .route("business-service", r -> r
+                        .path("/api/v1/business/**")
+                        .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
+                        .uri("lb://BUSINESS-SERVICE"))
                 .build();
     }
 }
