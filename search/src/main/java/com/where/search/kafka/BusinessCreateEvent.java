@@ -1,18 +1,14 @@
-package com.where.business.elasticsearch;
+package com.where.search.kafka;
+
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "businesses")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BusinessDocument {
-
-    @Id
+public class BusinessCreateEvent {
     private Long id;
     private String name;
     private String description;

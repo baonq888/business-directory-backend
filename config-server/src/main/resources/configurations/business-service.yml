@@ -25,13 +25,9 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.trusted.packages: '*'
-#        spring.json.type.mapping: >
-#          userCreateEvent:com.where.auth.kafka.UserCreateEvent,
-#          userRoleUpdateEvent:com.where.auth.kafka.UserRoleUpdateEvent
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: business-group
+        spring.json.type.mapping: businessEvent:com.where.business.kafka.BusinessEvent,
+
+
   cache:
     type: redis
 geonames:

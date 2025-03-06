@@ -1,24 +1,24 @@
-package com.where.business.elasticsearch.utils;
+package com.where.search.utils;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import com.where.business.dto.request.BusinessSearchRequest;
+import com.where.search.dto.request.BusinessSearchRequest;
 import lombok.experimental.UtilityClass;
 import java.util.Optional;
 
-@UtilityClass // Prevents instantiation (like a static helper class)
+@UtilityClass
 public class BusinessSearchQueryBuilder {
 
     public static BoolQuery buildQuery(BusinessSearchRequest request) {
         BoolQuery.Builder queryBuilder = QueryBuilders.bool();
 
-        // 🔹 Full-text search (Name & Description)
+        // Full-text search (Name & Description)
         Optional.ofNullable(request.getText()).ifPresent(text ->
                 queryBuilder.should(QueryBuilders.match(m -> m.field("name").query(text)))
                         .should(QueryBuilders.match(m -> m.field("description").query(text)))
         );
 
-        // 🔹 Exact matches (Category, District, City, Country)
+        // Exact matches (Category, District, City, Country)
         Optional.ofNullable(request.getCategoryId()).ifPresent(categoryId ->
                 queryBuilder.must(QueryBuilders.term(t -> t.field("categoryId").value(categoryId)))
         );
@@ -32,7 +32,7 @@ public class BusinessSearchQueryBuilder {
                 queryBuilder.must(QueryBuilders.term(t -> t.field("countryCode").value(countryCode)))
         );
 
-        // 🔹 Geo-distance filtering (Dynamic radius)
+        // Geo-distance filtering
         Double lat = parseDouble(request.getLat());
         Double lon = parseDouble(request.getLon());
 

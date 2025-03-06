@@ -29,6 +29,9 @@ public class GatewayConfig {
                         .path("/api/v1/users/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
                         .uri("lb://USER-SERVICE"))
+                .route("search-service", r -> r
+                        .path("/api/v1/search/**")
+                        .uri("lb://SEARCH-SERVICE"))
                 .route("business-service", r -> r
                         .path("/api/v1/business/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))

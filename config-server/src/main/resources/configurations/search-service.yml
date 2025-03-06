@@ -1,0 +1,14 @@
+server:
+  port: 8075
+spring:
+  elasticsearch:
+    uris: http://localhost:9200
+  kafka:
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: business-group
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: businessCreateEvent:com.where.search.kafka.BusinessCreateEvent
+

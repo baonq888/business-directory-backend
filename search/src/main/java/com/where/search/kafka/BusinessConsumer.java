@@ -1,7 +1,7 @@
-package com.where.business.kafka;
+package com.where.search.kafka;
 
-import com.where.business.elasticsearch.BusinessDocument;
-import com.where.business.repository.BusinessElasticsearchRepository;
+import com.where.search.document.BusinessDocument;
+import com.where.search.repository.BusinessElasticsearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 public class BusinessConsumer {
     private final BusinessElasticsearchRepository businessElasticsearchRepository;
 
-    @KafkaListener(topics = "business-topic", groupId = "business-group")
-    public void consumeBusinessCreatedEvent(BusinessEvent event) {
+    @KafkaListener(topics = "business-create-topic", groupId = "business-group")
+    public void consumeBusinessCreatedEvent(BusinessCreateEvent event) {
         BusinessDocument businessDocument = BusinessDocument.builder()
                 .id(event.getId())
                 .name(event.getName())
