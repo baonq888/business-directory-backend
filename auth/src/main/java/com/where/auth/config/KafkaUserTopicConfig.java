@@ -15,6 +15,13 @@ public class KafkaUserTopicConfig {
     }
 
     @Bean
+    public NewTopic userConfirmationTokenTopic() {
+        return TopicBuilder
+                .name("register-confirmation-token-topic")
+                .build();
+    }
+
+    @Bean
     public NewTopic userRoleUpdateTopic() {
         return TopicBuilder
                 .name("user-role-update-topic")

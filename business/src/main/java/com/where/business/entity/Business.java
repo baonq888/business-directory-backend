@@ -1,6 +1,6 @@
 package com.where.business.entity;
 
-import com.where.business.entity.location.District;
+import com.where.business.enums.BusinessStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -33,4 +33,8 @@ public class Business {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_info_id")
     private ContactInfo contactInfo;
+
+    @Enumerated(EnumType.STRING)
+    private BusinessStatus status;
+
 }

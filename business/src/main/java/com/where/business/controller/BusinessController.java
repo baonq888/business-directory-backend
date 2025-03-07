@@ -1,7 +1,6 @@
 package com.where.business.controller;
 
 import com.where.business.dto.request.BusinessCreateRequest;
-import com.where.business.elasticsearch.BusinessDocument;
 import com.where.business.entity.Business;
 import com.where.business.service.business.BusinessService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,13 @@ public class BusinessController {
     public ResponseEntity<Business> createBusiness(@RequestBody BusinessCreateRequest request) {
         Business business = businessService.createBusiness(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(business);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Business> updateBusinessStatus(@PathVariable Long id,
+                                                         @RequestParam String status) {
+        Business updatedBusiness = businessService.updateBusinessStatus(id, status);
+        return ResponseEntity.ok(updatedBusiness);
     }
 
 }

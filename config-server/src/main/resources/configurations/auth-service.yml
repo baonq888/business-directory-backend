@@ -28,3 +28,6 @@ spring:
         spring.json.type.mapping: >
           userCreateEvent:com.where.auth.kafka.UserCreateEvent,
           userRoleUpdateEvent:com.where.auth.kafka.UserRoleUpdateEvent
+
+auth:
+  confirmation-url: "http://localhost:3000/api/v1/auth/confirm?token="

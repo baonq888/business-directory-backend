@@ -1,13 +1,18 @@
 package com.where.auth.service;
 
 import com.where.auth.entity.AppUser;
+import com.where.auth.entity.ConfirmationToken;
 import com.where.auth.entity.Role;
+import com.where.auth.kafka.RegisterTokenEvent;
 import com.where.auth.kafka.UserCreateEvent;
 import com.where.auth.kafka.UserProducer;
 import com.where.auth.kafka.UserRoleUpdateEvent;
 import com.where.auth.repository.RoleRepository;
 import com.where.auth.repository.UserRepository;
+import com.where.auth.utils.ConfirmationTokenUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,27 +21,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService, UserDetailsService {
+    private final ConfirmationTokenService confirmationTokenService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserProducer userProducer;
-    public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserProducer userProducer) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-
-        this.userProducer = userProducer;
-    }
+    @Value("${auth.confirmation-url}")
+    private String confirmationUrl;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -67,6 +67,21 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Set.of(userRole));
 
+        // Send confirmation token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = ConfirmationTokenUtil.generateConfirmationToken(user);
+        String link = confirmationUrl+token;
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        // Send Confirmation Token Link to Email Service
+        RegisterTokenEvent registerTokenEvent = new RegisterTokenEvent(
+                user.getEmail(),
+                user.getName(),
+                link
+        );
+        userProducer.sendRegisterConfirmationEvent(registerTokenEvent);
+
+        // Send saved User to User Service for additional User's detail management
         UserCreateEvent userCreateEvent = new UserCreateEvent(
                 user.getId(),
                 user.getName(),
@@ -74,6 +89,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
                 Set.of(userRole.getName())
         );
         userProducer.sendAppUser(userCreateEvent);
+
         return userRepository.save(user);
     }
 
