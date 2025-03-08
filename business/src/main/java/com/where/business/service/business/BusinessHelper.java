@@ -32,6 +32,7 @@ public class BusinessHelper {
                 .countryCode(business.getCountryCode())
                 .lat(request.getLat())
                 .lon(request.getLon())
+                .status(BusinessStatus.PENDING_APPROVAL.toString())
                 .build();
     }
     public static void updateBusinessFromRequest(Business business, BusinessUpdateRequest request) {

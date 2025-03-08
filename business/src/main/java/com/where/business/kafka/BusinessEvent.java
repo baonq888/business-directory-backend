@@ -17,4 +17,5 @@ public class BusinessEvent {
     private String countryCode;
     private String lat;
     private String lon;
+    private String status;
 }

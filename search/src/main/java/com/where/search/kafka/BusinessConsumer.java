@@ -25,6 +25,7 @@ public class BusinessConsumer {
                 .countryCode(event.getCountryCode())
                 .lat(event.getLat())
                 .lon(event.getLon())
+                .status(event.getStatus())
                 .build();
 
         businessElasticsearchRepository.save(businessDocument);
