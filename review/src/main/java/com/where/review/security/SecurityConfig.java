@@ -1,7 +1,7 @@
-package com.where.business.security;
+package com.where.review.security;
 
 import com.where.enums.Role;
-import com.where.business.filter.CustomAuthorizationFilter;
+import com.where.review.filter.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,9 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.PUT, "/business/{id}").hasAnyRole(Role.BUSINESS_OWNER.name()) // Any authenticated user can get user by ID
-                        .requestMatchers(HttpMethod.PATCH, "/business/{id}").hasRole(Role.ADMIN.name()) // Any authenticated user can get user by ID
-                        .requestMatchers("/business/**").hasAnyRole(Role.USER.name(), Role.BUSINESS_OWNER.name(), Role.ADMIN.name()) // Other user endpoints require ADMIN role// Only users with ROLE_ADMIN can access
+                        .requestMatchers("/review/**").hasRole(Role.USER.name()) // Other user endpoints require ADMIN role// Only users with ROLE_ADMIN can access
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

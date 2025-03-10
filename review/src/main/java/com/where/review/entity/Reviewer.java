@@ -1,11 +1,15 @@
-package com.where.business.entity;
-import jakarta.persistence.*;
+package com.where.review.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
-import java.util.List;
 
 @Entity
-@Getter
 @Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reviewer {
@@ -15,6 +19,4 @@ public class Reviewer {
     private String name;
     private String email;
 
-    @OneToMany(mappedBy = "reviewer")
-    private List<Review> reviews;
 }

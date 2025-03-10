@@ -1,22 +1,19 @@
-package com.where.business.service.review;
+package com.where.review.service;
 
-import com.where.business.dto.request.ReviewCreateRequest;
-import com.where.business.entity.Business;
-import com.where.business.entity.Review;
-import com.where.business.entity.Reviewer;
-import com.where.business.exception.ReviewException;
-import com.where.business.repository.BusinessRepository;
-import com.where.business.repository.ReviewRepository;
-import com.where.business.repository.ReviewerRepository;
+import com.where.review.dto.request.ReviewCreateRequest;
+import com.where.review.entity.Review;
+import com.where.review.entity.Reviewer;
+import com.where.review.exception.ReviewException;
+import com.where.review.repository.ReviewRepository;
+import com.where.review.repository.ReviewerRepository;
+import org.springframework.data.domain.Page;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,26 +21,25 @@ import java.util.Optional;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final BusinessRepository businessRepository;
     private final ReviewerRepository reviewerRepository;
 
     @Override
     public Review createReview(ReviewCreateRequest request) {
         try {
-            Business business = businessRepository.findById(request.getBusinessId())
-                    .orElseThrow(() -> new EntityNotFoundException("Business not found with ID: " + request.getBusinessId()));
-
-            Reviewer reviewer = reviewerRepository.findById(request.getReviewerId())
-                    .orElseThrow(() -> new EntityNotFoundException("Reviewer not found with ID: " + request.getReviewerId()));
-
-            if (reviewRepository.existsByBusinessAndReviewer(business, reviewer)) {
+            Reviewer reviewer = new Reviewer(
+                    request.getReviewerId(),
+                    request.getEmail(),
+                    request.getName()
+            );
+            if (reviewRepository.existsByBusinessIdAndReviewer(request.getBusinessId(),reviewer)) {
                 throw new ReviewException("Reviewer has already submitted a review for this business");
             }
 
             Review review = new Review();
+
             review.setRating(request.getRating());
             review.setComment(request.getComment());
-            review.setBusiness(business);
+            review.setBusinessId(review.getBusinessId());
             review.setReviewer(reviewer);
 
             return reviewRepository.save(review);
@@ -55,9 +51,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Optional<Review> getReviewById(Long id) {
+    public Review getReviewById(Long id) {
         try {
-            return reviewRepository.findById(id);
+            return reviewRepository.findById(id).orElseThrow(
+                    () -> new EntityNotFoundException("Review not found with ID: " + id));
+
         } catch (Exception e) {
             log.error("Error retrieving review with ID: {}", id, e);
             throw new ReviewException("Failed to retrieve review. Please try again later.", e);

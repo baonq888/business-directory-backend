@@ -3,7 +3,6 @@ package com.where.business.entity;
 import com.where.business.enums.BusinessStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,9 +25,6 @@ public class Business {
     private String countryCode; // GeoNames country code
     private String lat;
     private String lon;
-
-    @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
-    private List<Review> reviews;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_info_id")

@@ -30,7 +30,7 @@ public class UserProducer {
                 .withPayload(registerTokenEvent)
                 .setHeader(KafkaHeaders.TOPIC,"register-confirmation-token-topic")
                 .build();
-        kafkaTemplate.send(message);
+        kafkaRegisterConfirmationTemplate.send(message);
     }
 
     public void sendUserRoleUpdate(UserRoleUpdateEvent userRoleUpdateEvent) {

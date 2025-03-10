@@ -36,6 +36,10 @@ public class GatewayConfig {
                         .path("/api/v1/business/**")
                         .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
                         .uri("lb://BUSINESS-SERVICE"))
+                .route("review-service", r -> r
+                        .path("/api/v1/review/**")
+                        .filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthFilter.Config())))
+                        .uri("lb://REVIEW-SERVICE"))
                 .build();
     }
 }
