@@ -21,20 +21,21 @@ public class BusinessHelper {
         return business;
     }
 
-    public static BusinessEvent createBusinessKafkaEvent(Business business, BusinessCreateRequest request) {
+    public static BusinessEvent createBusinessKafkaEvent(Business business) {
         return BusinessEvent.builder()
                 .id(business.getId())
                 .name(business.getName())
                 .description(business.getDescription())
-                .categoryId(request.getCategoryId())
-                .districtId(request.getDistrictId())
+                .categoryId(business.getCategory().getId())
+                .districtId(business.getDistrictId())
                 .cityId(business.getCityId())
                 .countryCode(business.getCountryCode())
-                .lat(request.getLat())
-                .lon(request.getLon())
+                .lat(business.getLat())
+                .lon(business.getLon())
                 .status(BusinessStatus.PENDING_APPROVAL.toString())
                 .build();
     }
+
     public static void updateBusinessFromRequest(Business business, BusinessUpdateRequest request) {
         if (request.getName() != null) business.setName(request.getName());
         if (request.getDescription() != null) business.setDescription(request.getDescription());

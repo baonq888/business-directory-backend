@@ -42,13 +42,8 @@ public class BusinessServiceImpl implements BusinessService{
             String countryCode = (String) districtData.get().get("countryCode");
 
             Business business = BusinessHelper.createBusinessFromRequest(request, cityId, countryCode);
-            business = businessRepository.save(business);
 
-            // Send Event to Search Service to persist in Elasticsearch's index
-            BusinessEvent businessCreateEvent = BusinessHelper.createBusinessKafkaEvent(business, request);
-            businessProducer.sendBusinessCreateEvent(businessCreateEvent);
-
-            return business;
+            return businessRepository.save(business);
 
         } catch (IllegalArgumentException e) {
             log.error("Validation error: {}", e.getMessage(), e);
@@ -75,6 +70,10 @@ public class BusinessServiceImpl implements BusinessService{
                     newStatus
             );
             business = businessRepository.save(business);
+
+            // Send Event to Search Service to persist in Elasticsearch's index
+            BusinessEvent businessCreateEvent = BusinessHelper.createBusinessKafkaEvent(business);
+            businessProducer.sendBusinessCreateEvent(businessCreateEvent);
 
             // Send Event to Email Service
             businessProducer.sendBusinessStatusUpdateEvent(updateEvent);
@@ -116,6 +115,10 @@ public class BusinessServiceImpl implements BusinessService{
 
             BusinessHelper.updateBusinessFromRequest(business, request);
 
+            // Send to search-service to update Business document from elasticsearch
+            BusinessEvent businessUpdateEvent = BusinessHelper.createBusinessKafkaEvent(business);
+
+            businessProducer.sendBusinessUpdateEvent(businessUpdateEvent);
             return businessRepository.save(business);
 
         } catch (EntityNotFoundException e) {

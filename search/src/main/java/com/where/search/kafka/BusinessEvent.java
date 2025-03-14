@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BusinessCreateEvent {
+public class BusinessEvent {
     private Long id;
     private String name;
     private String description;

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class BusinessProducer {
     private final KafkaTemplate<String, BusinessEvent> kafkaTemplate;
     private final KafkaTemplate<String, BusinessEvent> kafkaTemplateStatusUpdate;
+    private final KafkaTemplate<String, BusinessEvent> kafkaTemplateUpdate;
+
     public void sendBusinessCreateEvent(BusinessEvent businessEvent) {
         log.info("Sending business create message");
         Message<BusinessEvent> message = MessageBuilder
@@ -29,5 +31,13 @@ public class BusinessProducer {
                 .setHeader(KafkaHeaders.TOPIC,"business-status-update-topic")
                 .build();
         kafkaTemplateStatusUpdate.send(message);
+    }
+    public void sendBusinessUpdateEvent(BusinessEvent businessEvent) {
+        log.info("Sending business update message");
+        Message<BusinessEvent> message = MessageBuilder.
+                withPayload(businessEvent)
+                .setHeader(KafkaHeaders.TOPIC,"business-update-topic")
+                .build();
+        kafkaTemplateUpdate.send(message);
     }
 }

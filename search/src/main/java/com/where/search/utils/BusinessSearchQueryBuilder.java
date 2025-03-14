@@ -32,6 +32,9 @@ public class BusinessSearchQueryBuilder {
                 queryBuilder.must(QueryBuilders.term(t -> t.field("countryCode").value(countryCode)))
         );
 
+        queryBuilder.must(QueryBuilders.term(t -> t.field("status").value("APPROVED")));
+
+
         // Geo-distance filtering
         Double lat = parseDouble(request.getLat());
         Double lon = parseDouble(request.getLon());

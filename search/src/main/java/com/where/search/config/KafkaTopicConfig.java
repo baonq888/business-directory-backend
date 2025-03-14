@@ -7,10 +7,10 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaTopicConfig {
-    @Bean
-    public NewTopic userCreateTopic() {
-        return TopicBuilder
-                .name("business-create-topic")
-                .build();
-    }
+//    @Bean
+//    public NewTopic userCreateTopic() {
+//        return TopicBuilder
+//                .name("business-create-topic")
+//                .build();
+//    }
 }

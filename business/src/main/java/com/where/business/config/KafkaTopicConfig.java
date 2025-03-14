@@ -20,4 +20,11 @@ public class KafkaTopicConfig {
                 .name("business-status-update-topic")
                 .build();
     }
+
+    @Bean
+    public NewTopic businessUpdateTopic() {
+        return TopicBuilder
+                .name("business-update-topic")
+                .build();
+    }
 }

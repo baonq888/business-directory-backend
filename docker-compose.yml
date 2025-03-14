@@ -127,3 +127,4 @@ volumes:
   db:
   pgadmin:
   mongo:
+  elasticsearch:
