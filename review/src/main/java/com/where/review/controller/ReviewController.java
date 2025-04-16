@@ -51,4 +51,9 @@ public class ReviewController {
         reviewService.deleteReview(id);
         return ResponseEntity.ok(Collections.singletonMap("message", "Review deleted successfully"));
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }

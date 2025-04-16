@@ -4,21 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EntityContext {
-    private static final Map<Class<?>, Object> store = new HashMap<>();
+    private static final Map<String, Object> store = new HashMap<>();
 
-    // Save entity
-    public static <T> void put(Class<T> clazz, T value) {
-        store.put(clazz, value);
+    // Save entity with a custom key
+    public static <T> void put(String key, T value) {
+        store.put(key, value);
     }
 
-    // Get entity
-    public static <T> T get(Class<T> clazz) {
-        return clazz.cast(store.get(clazz));
+    // Get entity by key
+    public static <T> T get(String key) {
+        return (T) store.get(key);
     }
 
-    // Remove specific entity
-    public static <T> void remove(Class<T> clazz) {
-        store.remove(clazz);
+    // Remove specific entity by key
+    public static void remove(String key) {
+        store.remove(key);
     }
 
     // Clear everything

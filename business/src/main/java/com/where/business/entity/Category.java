@@ -19,6 +19,9 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Business> businesses;
 
+    public Category(String name) {
+    }
+
     public Category(Long categoryId) {
     }
 }

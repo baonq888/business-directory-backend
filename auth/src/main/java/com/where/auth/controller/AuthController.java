@@ -83,4 +83,9 @@ public class AuthController {
             throw new RuntimeException("refresh token is missing");
         }
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }

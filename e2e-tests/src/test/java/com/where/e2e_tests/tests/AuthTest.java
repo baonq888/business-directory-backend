@@ -47,24 +47,34 @@ public class AuthTest {
                         .extract()
                         .as(AppUser.class);
 
-        // Store the user for later use
-        EntityContext.put(AppUser.class, user);
     }
 
     @Test
     @Order(2)
-    void testAddRoleToUser() {
-        AppUser user = EntityContext.get(AppUser.class);
+    void testLoginUser() throws JsonProcessingException {
+        Map<String, String> loginPayload = new HashMap<>();
+        loginPayload.put("email", "testuser@example.com");
+        loginPayload.put("password", "123");
 
-        given()
-                .contentType(ContentType.JSON)
-                .body("{ \"username\": \"" + user.getEmail() + "\" }")
-                .when()
-                .post("/user/role/add")
-                .then()
-                .statusCode(200)
-                .body(equalTo("Add role successfully"));
+        String jsonBody = objectMapper.writeValueAsString(loginPayload);
+
+        var response =
+                given()
+                        .contentType(ContentType.JSON)
+                        .body(jsonBody)
+                        .when()
+                        .post("/login")
+                        .then()
+                        .statusCode(200)
+                        .body("access_token", notNullValue())
+                        .body("refresh_token", notNullValue())
+                        .extract()
+                        .response();
+
+        String accessToken = response.jsonPath().getString("access_token");
+        String refreshToken = response.jsonPath().getString("refresh_token");
+
+        TokenContext.put("access_token", accessToken);
+        TokenContext.put("refresh_token", refreshToken);
     }
-
-
 }

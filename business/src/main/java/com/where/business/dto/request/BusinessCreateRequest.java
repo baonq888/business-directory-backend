@@ -12,8 +12,8 @@ public class BusinessCreateRequest {
     private Long districtId;
     private Long cityId;
     private String countryCode;
-    private String lat;
-    private String lon;
+//    private String lat;
+//    private String lon;
     private String phone;
     private String email;
     private String website;

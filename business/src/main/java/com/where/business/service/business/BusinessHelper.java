@@ -16,6 +16,8 @@ public class BusinessHelper {
         business.setCategory(new Category(request.getCategoryId()));
         business.setDistrictId(request.getDistrictId());
         business.setCityId(cityId);
+//        business.setLat(request.getLat());
+//        business.setLon(request.getLon());
         business.setCountryCode(countryCode);
         business.setStatus(BusinessStatus.PENDING_APPROVAL);
         return business;

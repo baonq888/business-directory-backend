@@ -21,4 +21,9 @@ public class SearchController {
         Page<BusinessDocument> result = searchService.searchBusinesses(request);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }

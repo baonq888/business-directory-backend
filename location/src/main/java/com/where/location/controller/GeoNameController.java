@@ -37,4 +37,9 @@ public class GeoNameController {
         List<District> districts = geoNameService.getDistrictsByCity(cityName);
         return districts.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(districts);
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }

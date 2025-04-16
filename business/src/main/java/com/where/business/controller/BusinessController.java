@@ -28,4 +28,9 @@ public class BusinessController {
         return ResponseEntity.ok(updatedBusiness);
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
+
 }
