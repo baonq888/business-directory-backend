@@ -18,11 +18,11 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AuthTest {
 
-    private static final String BASE_URL = "http://localhost:8080/api/v1/auth";
+    private static final String BASE_URL = "http://localhost:8222/api/v1/auth";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeAll
-    static void setUp() {
+    static void setup() {
         RestAssured.baseURI = BASE_URL;
     }
 

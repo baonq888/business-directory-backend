@@ -35,18 +35,6 @@ public class BusinessSearchQueryBuilder {
             // Status filter
             builder.must(m -> m.term(t -> t.field("status").value("APPROVED")));
 
-            // Geo-distance filtering
-            Double lat = parseDouble(request.getLat());
-            Double lon = parseDouble(request.getLon());
-
-            if (lat != null && lon != null) {
-                builder.must(m -> m.geoDistance(g -> g
-                        .field("location")
-                        .distance("10km") // 🔥 Default 10km radius
-                        .location(l -> l.latlon(geo -> geo.lat(lat).lon(lon)))
-                ));
-            }
-
             return b;
         }));
     }
