@@ -18,16 +18,6 @@ CREATE TABLE if not exists app_user_roles (
     FOREIGN KEY (roles_id) REFERENCES role(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS confirmation_token (
-    id BIGSERIAL PRIMARY KEY,
-    token VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    confirmed_at TIMESTAMP NULL,
-    user_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES app_user(user_id) ON DELETE CASCADE
-);
 
-CREATE sequence if NOT EXISTS confirmation_token_seq increment BY 50;
 create sequence if not exists role_seq increment by 50;
 create sequence if not exists app_user_seq increment by 50;

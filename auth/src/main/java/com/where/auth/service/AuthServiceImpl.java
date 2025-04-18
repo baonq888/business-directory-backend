@@ -59,6 +59,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public AppUser saveUser(AppUser user) {
         log.info("Saving new user {} to database",user.getName());
         Role userRole = roleRepository.findByName(com.where.enums.Role.USER.name())
@@ -67,10 +68,12 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Set.of(userRole));
 
+        AppUser newUser = userRepository.save(user);
+        userRepository.flush();
         // Send confirmation token
         String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = ConfirmationTokenUtil.generateConfirmationToken(user);
-        String link = confirmationUrl+token;
+        ConfirmationToken confirmationToken = ConfirmationTokenUtil.generateConfirmationToken(newUser, token);
+        String link = confirmationUrl+confirmationToken;
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         // Send Confirmation Token Link to Email Service
@@ -83,14 +86,14 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
         // Send saved User to User Service for additional User's detail management
         UserCreateEvent userCreateEvent = new UserCreateEvent(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
+                newUser.getId(),
+                newUser.getName(),
+                newUser.getEmail(),
                 Set.of(userRole.getName())
         );
         userProducer.sendAppUser(userCreateEvent);
 
-        return userRepository.save(user);
+        return newUser;
     }
 
 

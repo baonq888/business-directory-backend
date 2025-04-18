@@ -10,9 +10,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ConfirmationTokenUtil {
 
-    public static ConfirmationToken generateConfirmationToken(AppUser user) {
+    public static ConfirmationToken generateConfirmationToken(AppUser user, String token) {
         return new ConfirmationToken(
-                UUID.randomUUID().toString(),
+                token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 user
