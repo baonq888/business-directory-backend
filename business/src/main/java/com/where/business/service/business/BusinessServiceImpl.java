@@ -8,7 +8,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import com.where.business.dto.request.BusinessCreateRequest;
 import com.where.business.entity.Business;
-import com.where.business.kafka.BusinessEvent;
 import com.where.business.kafka.BusinessProducer;
 import com.where.business.repository.BusinessRepository;
 import com.where.business.service.geoname.GeoNameService;
@@ -27,7 +26,6 @@ public class BusinessServiceImpl implements BusinessService{
     private final BusinessRepository businessRepository;
     private final GeoNameService geoNamesService;
     private final BusinessProducer businessProducer;
-    private final ElasticsearchOperations elasticsearchOperations;
 
     @Override
     @Transactional
@@ -71,10 +69,6 @@ public class BusinessServiceImpl implements BusinessService{
             );
             business = businessRepository.save(business);
 
-            // Send Event to Search Service to persist in Elasticsearch's index
-            BusinessEvent businessCreateEvent = BusinessHelper.createBusinessKafkaEvent(business);
-            businessProducer.sendBusinessCreateEvent(businessCreateEvent);
-
             // Send Event to Email Service
             businessProducer.sendBusinessStatusUpdateEvent(updateEvent);
             return business;
@@ -114,11 +108,6 @@ public class BusinessServiceImpl implements BusinessService{
                     .orElseThrow(() -> new EntityNotFoundException("Business not found"));
 
             BusinessHelper.updateBusinessFromRequest(business, request);
-
-            // Send to search-service to update Business document from elasticsearch
-            BusinessEvent businessUpdateEvent = BusinessHelper.createBusinessKafkaEvent(business);
-
-            businessProducer.sendBusinessUpdateEvent(businessUpdateEvent);
             return businessRepository.save(business);
 
         } catch (EntityNotFoundException e) {
