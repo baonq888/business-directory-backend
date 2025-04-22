@@ -5,41 +5,29 @@ import com.where.business.enums.BusinessStatus;
 import com.where.business.exception.BusinessException;
 import com.where.business.kafka.BusinessStatusUpdateEvent;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import com.where.business.dto.request.BusinessCreateRequest;
 import com.where.business.entity.Business;
 import com.where.business.kafka.BusinessProducer;
 import com.where.business.repository.BusinessRepository;
-import com.where.business.service.geoname.GeoNameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BusinessServiceImpl implements BusinessService{
     private final BusinessRepository businessRepository;
-    private final GeoNameService geoNamesService;
     private final BusinessProducer businessProducer;
 
     @Override
     @Transactional
     public Business createBusiness(BusinessCreateRequest request) {
         try {
-            Optional<Map<String, Object>> districtData = geoNamesService.getLocationById(request.getDistrictId());
-            if (districtData.isEmpty()) {
-                throw new IllegalArgumentException("Invalid District ID");
-            }
 
-            Long cityId = (Long) districtData.get().get("adminId1"); // City ID from GeoNames
-            String countryCode = (String) districtData.get().get("countryCode");
-
-            Business business = BusinessHelper.createBusinessFromRequest(request, cityId, countryCode);
+            Business business = BusinessHelper.createBusinessFromRequest(request);
 
             return businessRepository.save(business);
 
@@ -63,7 +51,9 @@ public class BusinessServiceImpl implements BusinessService{
                     .orElseThrow(() -> new RuntimeException("Business not found with ID: " + businessId));
 
             business.setStatus(status);
+            String businessOwnerEmail = business.getContactInfo().getEmail();
             BusinessStatusUpdateEvent updateEvent = new BusinessStatusUpdateEvent(
+                    businessOwnerEmail,
                     business.getName(),
                     newStatus
             );

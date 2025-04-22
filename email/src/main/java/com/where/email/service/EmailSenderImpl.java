@@ -1,68 +1,78 @@
 package com.where.email.service;
 
+import com.where.email.kafka.business.BusinessStatusUpdateEvent;
+import com.where.email.kafka.register.RegisterTokenEvent;
+import com.where.email.service.helper.EmailSenderHelper;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring6.SpringTemplateEngine;
-
 import java.util.HashMap;
 import java.util.Map;
-
+import static com.where.email.service.EmailTemplates.BUSINESS_STATUS_UPDATED;
 import static com.where.email.service.EmailTemplates.REGISTER_CONFIRMATION;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class EmailSenderImpl implements EmailSender {
-    private final JavaMailSender mailSender;
-    private final SpringTemplateEngine templateEngine;
-    @Value("${email.from}")
-    private String fromEmail;
+    private final EmailSenderHelper emailSenderHelper;
 
     @Override
     @Async
     @Retryable(
-            retryFor = MessagingException.class, // specify the exception to retry
-            maxAttempts = 4, // default is 3
-            backoff = @Backoff(delay = 3000) // set the backoff delay to 3 seconds
+            retryFor = MessagingException.class,
+            maxAttempts = 4,
+            backoff = @Backoff(delay = 3000)
     )
-    public void sendSignUpConfirmationEmail(String to, String name, String link) {
+    public void sendSignUpConfirmationEmail(RegisterTokenEvent registerTokenEvent) {
 
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            String to = registerTokenEvent.getEmail();
+            String name = registerTokenEvent.getName();
+            String link = registerTokenEvent.getLink();
             final String templateName = REGISTER_CONFIRMATION.getTemplate();
 
             Map<String, Object> variables = new HashMap<>();
             variables.put("name", name);
             variables.put("link", link);
-            Context context = new Context();
-            context.setVariables(variables);
-
-            MimeMessageHelper messageHelper = new MimeMessageHelper(
-                    mimeMessage,
-                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                    UTF_8.name()
+            emailSenderHelper.sendEmail(
+                    to, variables, templateName, REGISTER_CONFIRMATION.getSubject()
             );
-            messageHelper.setFrom(fromEmail);
-            messageHelper.setSubject(REGISTER_CONFIRMATION.getSubject());
 
-            String htmlTemplate = templateEngine.process(templateName, context);
-            messageHelper.setText(htmlTemplate, true);
-            messageHelper.setTo(to);
+            log.info("INFO - Register Confirmation Email successfully sent to {}", to);
+        } catch (MessagingException e) {
+            log.error("Fail to send email",e);
+            throw new IllegalStateException("Failed to send email");
+        }
+    }
 
-            mailSender.send(mimeMessage);
+    @Override
+    @Async
+    @Retryable(
+            retryFor = MessagingException.class,
+            maxAttempts = 4,
+            backoff = @Backoff(delay = 3000)
+    )
+    public void sendBusinessStatusUpdatedEmail(BusinessStatusUpdateEvent businessStatusUpdateEvent) {
+        try {
+            String to = businessStatusUpdateEvent.getBusinessOwnerEmail();
+            String businessName = businessStatusUpdateEvent.getBusinessName();
+            String newStatus = businessStatusUpdateEvent.getStatus();
+            final String templateName = BUSINESS_STATUS_UPDATED.getTemplate();
 
-            log.info("INFO - Register Confirmation Email successfully sent to {} with template {} ", to, templateName);
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("businessName", businessName);
+            variables.put("newStatus", newStatus);
+
+            emailSenderHelper.sendEmail(
+                    to, variables, templateName,BUSINESS_STATUS_UPDATED.getSubject()
+            );
+
+            log.info("INFO - Business Status Updated Email successfully sent to {}", to);
         } catch (MessagingException e) {
             log.error("Fail to send email",e);
             throw new IllegalStateException("Failed to send email");
@@ -71,6 +81,6 @@ public class EmailSenderImpl implements EmailSender {
 
 
     public String handleMessagingException(MessagingException e) {
-        return "";
+        return e.getMessage();
     }
 }

@@ -7,12 +7,6 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaTopicConfig {
-    @Bean
-    public NewTopic businessCreateTopic() {
-        return TopicBuilder
-                .name("business-create-topic")
-                .build();
-    }
 
     @Bean
     public NewTopic businessStatusUpdateTopic() {
@@ -21,10 +15,4 @@ public class KafkaTopicConfig {
                 .build();
     }
 
-    @Bean
-    public NewTopic businessUpdateTopic() {
-        return TopicBuilder
-                .name("business-update-topic")
-                .build();
-    }
 }

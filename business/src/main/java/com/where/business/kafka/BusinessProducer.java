@@ -12,18 +12,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class BusinessProducer {
-    private final KafkaTemplate<String, BusinessEvent> kafkaTemplate;
-    private final KafkaTemplate<String, BusinessEvent> kafkaTemplateStatusUpdate;
-    private final KafkaTemplate<String, BusinessEvent> kafkaTemplateUpdate;
+    private final KafkaTemplate<String, BusinessStatusUpdateEvent> kafkaTemplateStatusUpdate;
 
-    public void sendBusinessCreateEvent(BusinessEvent businessEvent) {
-        log.info("Sending business create message");
-        Message<BusinessEvent> message = MessageBuilder
-                .withPayload(businessEvent)
-                .setHeader(KafkaHeaders.TOPIC,"business-create-topic")
-                .build();
-        kafkaTemplate.send(message);
-    }
+
     public void sendBusinessStatusUpdateEvent(BusinessStatusUpdateEvent businessStatusUpdateEvent) {
         log.info("Sending business status update message");
         Message<BusinessStatusUpdateEvent> message = MessageBuilder.
@@ -32,12 +23,5 @@ public class BusinessProducer {
                 .build();
         kafkaTemplateStatusUpdate.send(message);
     }
-    public void sendBusinessUpdateEvent(BusinessEvent businessEvent) {
-        log.info("Sending business update message");
-        Message<BusinessEvent> message = MessageBuilder.
-                withPayload(businessEvent)
-                .setHeader(KafkaHeaders.TOPIC,"business-update-topic")
-                .build();
-        kafkaTemplateUpdate.send(message);
-    }
+
 }

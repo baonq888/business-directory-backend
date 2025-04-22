@@ -13,7 +13,6 @@
         <option value="$PROJECT_DIR$/user/pom.xml" />
         <option value="$PROJECT_DIR$/business/pom.xml" />
         <option value="$PROJECT_DIR$/location/pom.xml" />
-        <option value="$PROJECT_DIR$/search/pom.xml" />
         <option value="$PROJECT_DIR$/review/pom.xml" />
         <option value="$PROJECT_DIR$/e2e-tests/pom.xml" />
       </list>

@@ -14,6 +14,6 @@ public class RegisterTokenConsumer {
 
     @KafkaListener(topics = "register-confirmation-token-topic")
     public void consumeRegisterConfirmationEvent(RegisterTokenEvent registerTokenEvent) {
-
+        emailSender.sendSignUpConfirmationEmail(registerTokenEvent);
     }
 }

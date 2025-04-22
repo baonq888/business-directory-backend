@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum EmailTemplates {
     REGISTER_CONFIRMATION("register-confirmation.html", "Confirm your email"),
+    BUSINESS_STATUS_UPDATED("business-status-updated", "Business Status Updated"),
     ;
 
     @Getter

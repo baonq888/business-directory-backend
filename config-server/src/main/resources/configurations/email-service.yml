@@ -1,5 +1,5 @@
 server:
-  port: 8040
+  port: 8070
 spring:
   kafka:
     consumer:
@@ -10,7 +10,9 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        # spring.json.type.mapping: userSignupEvent:com.where.ecommerce.kafka.order.OrderConfirmation
+        spring.json.type.mapping:
+          registerTokenEvent: com.where.email.kafka.register.RegisterTokenEvent,
+          businessStatusUpdateEvent: com.where.email.kafka.business.BusinessStatusUpdateEvent
   mail:
     host: localhost
     port: 1025

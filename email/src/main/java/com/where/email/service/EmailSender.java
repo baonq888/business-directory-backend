@@ -1,8 +1,11 @@
 package com.where.email.service;
 
+import com.where.email.kafka.business.BusinessStatusUpdateEvent;
+import com.where.email.kafka.register.RegisterTokenEvent;
 import jakarta.mail.MessagingException;
 
 public interface EmailSender {
-    void sendSignUpConfirmationEmail(String to, String name,String link);
-    public String handleMessagingException(MessagingException e);
+    void sendSignUpConfirmationEmail(RegisterTokenEvent registerTokenEvent);
+    void sendBusinessStatusUpdatedEmail(BusinessStatusUpdateEvent businessStatusUpdateEvent);
+    String handleMessagingException(MessagingException e);
 }

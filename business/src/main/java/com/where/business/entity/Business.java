@@ -15,14 +15,12 @@ public class Business {
     private Long id;
     private String name;
     private String description;
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-    private Long districtId;  // GeoNames district ID
-    private Long cityId;      // GeoNames city ID
-    private String countryCode; // GeoNames country code
+    private Long districtName;
+    private Long cityName;
+    private String countryCode;
     private String lat;
     private String lon;
 

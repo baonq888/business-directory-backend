@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BusinessStatusUpdateEvent {
-    private String name;
+    private String businessOwnerEmail;
+    private String businessName;
     private String status;
 }

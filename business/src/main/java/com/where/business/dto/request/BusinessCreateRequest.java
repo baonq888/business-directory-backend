@@ -9,11 +9,9 @@ public class BusinessCreateRequest {
     private String name;
     private String description;
     private Long categoryId;
-    private Long districtId;
-    private Long cityId;
+    private Long districtName;
+    private Long cityName;
     private String countryCode;
-//    private String lat;
-//    private String lon;
     private String phone;
     private String email;
     private String website;
