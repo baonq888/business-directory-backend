@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm Your Account</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+<div style="max-width: 600px; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); text-align: center; margin: auto;">
+
+  <h2 style="color: #333;">Hello, <span th:text="${businessName}"></span>!</h2>
+
+  <p style="color: #555; font-size: 16px;">
+    Thank you for registering. Please confirm your account by clicking the button below.
+  </p>
+
+  <p>
+    Your business status is <span th:text="${newStatus}"></span>!
+  </p>
+
+
+  <hr style="margin-top: 20px; border: none; border-top: 1px solid #ddd;">
+
+  <p style="color: #777; font-size: 12px;">
+    If you didn’t sign up for this account, you can safely ignore this email.
+  </p>
+
+</div>
+
+</body>
+</html>
