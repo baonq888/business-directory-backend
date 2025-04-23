@@ -80,7 +80,4 @@ public class EmailSenderImpl implements EmailSender {
     }
 
 
-    public String handleMessagingException(MessagingException e) {
-        return e.getMessage();
-    }
 }

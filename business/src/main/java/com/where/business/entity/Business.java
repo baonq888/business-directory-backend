@@ -18,9 +18,9 @@ public class Business {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    private Long districtName;
-    private Long cityName;
-    private String countryCode;
+    private String districtName;
+    private String cityName;
+    private String countryName;
     private String lat;
     private String lon;
 

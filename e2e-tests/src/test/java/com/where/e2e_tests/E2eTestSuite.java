@@ -14,4 +14,5 @@ import org.junit.platform.suite.api.Suite;
         BusinessTest.class
 })
 public class E2eTestSuite {
+
 }

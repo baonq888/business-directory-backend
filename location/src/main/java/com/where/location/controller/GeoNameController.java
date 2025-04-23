@@ -26,15 +26,17 @@ public class GeoNameController {
         return countries.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(countries);
     }
 
-    @GetMapping("/cities/{countryCode}")
+    @GetMapping("/countries/{countryCode}/cities")
     public ResponseEntity<List<City>> getCitiesByCountry(@PathVariable String countryCode) {
         List<City> cities = geoNameService.getCitiesByCountry(countryCode);
         return cities.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(cities);
     }
 
-    @GetMapping("/districts/{cityName}")
-    public ResponseEntity<List<District>> getDistrictsByCity(@PathVariable String cityName) {
-        List<District> districts = geoNameService.getDistrictsByCity(cityName);
+    @GetMapping("/countries/{countryCode}/cities/{cityName}/districts")
+    public ResponseEntity<List<District>> getDistrictsByCity(
+            @PathVariable String countryCode,
+            @PathVariable String cityName) {
+        List<District> districts = geoNameService.getDistrictsByCity(countryCode, cityName);
         return districts.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(districts);
     }
 

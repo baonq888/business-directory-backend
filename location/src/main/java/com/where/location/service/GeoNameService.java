@@ -10,5 +10,5 @@ import java.util.Map;
 public interface GeoNameService {
     List<Country> getCountries();
     List<City> getCitiesByCountry(String countryCode);
-    List<District> getDistrictsByCity(String cityName);
+    List<District> getDistrictsByCity(String countryCode, String cityName);
 }

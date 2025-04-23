@@ -15,7 +15,7 @@ public class BusinessHelper {
         business.setCategory(new Category(request.getCategoryId()));
         business.setDistrictName(request.getDistrictName());
         business.setCityName(request.getCityName());
-        business.setCountryCode(request.getCountryCode());
+        business.setCountryName(request.getCountryName());
         business.setStatus(BusinessStatus.PENDING_APPROVAL);
         return business;
     }
@@ -27,7 +27,7 @@ public class BusinessHelper {
         if (request.getCategoryId() != null) business.setCategory(new Category(request.getCategoryId()));
         if (request.getDistrictName() != null) business.setDistrictName(request.getDistrictName());
         if (request.getCityName() != null) business.setCityName(request.getCityName());
-        if (request.getCountryCode() != null) business.setCountryCode(request.getCountryCode());
+        if (request.getCountryName() != null) business.setCountryName(request.getCountryName());
 
         updateContactInfo(business, request);
 

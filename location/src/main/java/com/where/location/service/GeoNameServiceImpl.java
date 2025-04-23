@@ -70,11 +70,12 @@ public class GeoNameServiceImpl implements GeoNameService {
     }
 
     @Override
-    public List<District> getDistrictsByCity(String cityName) {
+    public List<District> getDistrictsByCity(String countryCode, String cityName) {
         String url = UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host("api.geonames.org")
                 .path("/searchJSON")
+                .queryParam("country", countryCode)
                 .queryParam("q", cityName)  // Search by city name
                 .queryParam("featureCode", "ADM2")  // Districts only
                 .queryParam("maxRows", "100")  // Increase limit

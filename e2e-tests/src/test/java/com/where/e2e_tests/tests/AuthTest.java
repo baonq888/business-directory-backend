@@ -2,8 +2,6 @@ package com.where.e2e_tests.tests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.where.auth.entity.AppUser;
-import com.where.e2e_tests.utils.EntityContext;
 import com.where.e2e_tests.utils.TokenContext;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
