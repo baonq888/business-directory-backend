@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,14 +23,14 @@ public class UserConsumer {
     public void consumeUserCreatedEvent(UserCreateEvent event) {
         System.out.println("Received new user: " + event.getEmail());
 
-        // Fetch only existing roles from the database
         Set<Role> roles = event.getRoles().stream()
                 .map(roleName -> roleRepository.findByName(roleName)
                         .orElseGet(() -> roleRepository.save(new Role(roleName))))
                 .collect(Collectors.toSet());
 
-        // Create and save UserDetail
-        UserDetail userDetail = new UserDetail();
+        Optional<UserDetail> existingUserOpt = userRepository.findById(event.getId());
+
+        UserDetail userDetail = existingUserOpt.orElseGet(UserDetail::new);
         userDetail.setId(event.getId());
         userDetail.setName(event.getName());
         userDetail.setEmail(event.getEmail());

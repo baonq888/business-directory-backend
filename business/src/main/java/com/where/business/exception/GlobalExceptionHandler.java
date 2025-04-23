@@ -16,6 +16,10 @@ public class GlobalExceptionHandler {
         return determineResponse(e);
     }
 
+    @ExceptionHandler(CategoryException.class)
+    public ResponseEntity<String> handleCategoryException(CategoryException e) {
+        return determineResponse(e);
+    }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<String> handleInvalidArgument(Exception e) {

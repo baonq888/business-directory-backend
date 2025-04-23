@@ -1,5 +1,6 @@
 package com.where.auth.controller;
 
+import com.where.auth.dto.request.RegsiterRequest;
 import com.where.auth.entity.AppUser;
 import com.where.auth.entity.Role;
 import com.where.auth.service.AuthService;
@@ -33,9 +34,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
+    public ResponseEntity<AppUser> saveUser(@RequestBody RegsiterRequest request) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/auth/register").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        return ResponseEntity.created(uri).body(userService.saveUser(request));
     }
 
     @PostMapping("/user/role/add")

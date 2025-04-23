@@ -1,5 +1,6 @@
 package com.where.auth.service;
 
+import com.where.auth.dto.request.RegsiterRequest;
 import com.where.auth.entity.AppUser;
 import com.where.auth.entity.ConfirmationToken;
 import com.where.auth.entity.Role;
@@ -60,7 +61,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
     @Override
     @Transactional
-    public AppUser saveUser(AppUser user) {
+    public AppUser saveUser(RegsiterRequest request) {
+        AppUser user = new AppUser(request.getName(), request.getEmail(), request.getPassword());
         log.info("Saving new user {} to database",user.getName());
         Role userRole = roleRepository.findByName(com.where.enums.Role.USER.name())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -69,6 +71,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setRoles(Set.of(userRole));
 
         AppUser newUser = userRepository.save(user);
+        System.out.println("newUser "+newUser);
         userRepository.flush();
         // Send confirmation token
         String token = UUID.randomUUID().toString();
@@ -86,7 +89,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
         // Send saved User to User Service for additional User's detail management
         UserCreateEvent userCreateEvent = new UserCreateEvent(
-                newUser.getId(),
+                newUser.getUserId(),
                 newUser.getName(),
                 newUser.getEmail(),
                 Set.of(userRole.getName())

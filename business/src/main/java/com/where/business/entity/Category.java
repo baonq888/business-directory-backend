@@ -8,20 +8,18 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Business> businesses;
 
     public Category(String name) {
+        this.name = name;
     }
 
     public Category(Long categoryId) {
+        this.id = categoryId;
     }
 }

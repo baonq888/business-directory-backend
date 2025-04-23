@@ -62,7 +62,7 @@ public class AuthTest {
     void testLoginUser() throws JsonProcessingException {
         Map<String, String> users = new HashMap<>();
         users.put("testuser@example.com", "123");
-        users.put("admin@example.com", "admin");
+        users.put("admin@example.com", "123");
 
         for (Map.Entry<String, String> entry : users.entrySet()) {
             String email = entry.getKey();
