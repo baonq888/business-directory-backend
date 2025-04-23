@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/business/category")
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 

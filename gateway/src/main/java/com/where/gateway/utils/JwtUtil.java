@@ -1,4 +1,5 @@
 package com.where.gateway.utils;
+import com.where.enums.JwtSecret;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -12,7 +13,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    private static final String SECRET_KEY = "secret";
+    private static final String SECRET_KEY = JwtSecret.SECRET_KEY.getKey();
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

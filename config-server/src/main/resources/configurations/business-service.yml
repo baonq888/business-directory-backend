@@ -20,12 +20,5 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
         spring.json.type.mapping: businessEvent:com.where.business.kafka.BusinessEvent,
-  cache:
-    type: redis
 geonames:
   username: baonq888
-redis:
-  host: where-redis
-  port: 6379
-  timeout: 5000
-  database: 1
