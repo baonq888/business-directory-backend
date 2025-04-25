@@ -14,10 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
@@ -86,8 +83,14 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
         token = token.substring(BEARER_PREFIX.length());
 
+        if (token.isEmpty()) {
+            throw new AuthenticationException("Empty JWT token", HttpStatus.UNAUTHORIZED);
+        }
+
         if (!jwtUtil.isTokenValid(token)) {
             if (jwtUtil.isTokenExpired(token)) {
+                Date expiryDate = jwtUtil.getTokenExpiration(token);
+                logger.info("Token for user {} expires at {}", jwtUtil.extractUsername(token), expiryDate);
                 throw new AuthenticationException("JWT token has expired", HttpStatus.UNAUTHORIZED);
             } else {
                 throw new AuthenticationException("Invalid JWT token", HttpStatus.UNAUTHORIZED);

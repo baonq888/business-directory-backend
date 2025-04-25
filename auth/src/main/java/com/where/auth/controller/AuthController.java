@@ -1,6 +1,6 @@
 package com.where.auth.controller;
 
-import com.where.auth.dto.request.RegsiterRequest;
+import com.where.auth.dto.request.RegisterRequest;
 import com.where.auth.entity.AppUser;
 import com.where.auth.entity.Role;
 import com.where.auth.service.AuthService;
@@ -9,6 +9,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.where.enums.JwtSecret;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> saveUser(@RequestBody RegsiterRequest request) {
+    public ResponseEntity<AppUser> saveUser(@RequestBody RegisterRequest request) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/auth/register").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(request));
+        AppUser user = userService.saveUser(
+                request,
+                com.where.enums.Role.USER.name()
+        );
+        return ResponseEntity.created(uri).body(user);
     }
+
 
     @PostMapping("/user/role/add")
     public ResponseEntity<String> addBusinessOwnerRoleToUser(@RequestBody String username) {
@@ -51,7 +57,7 @@ public class AuthController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(JwtSecret.SECRET_KEY.getKey().getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String username = decodedJWT.getSubject();
