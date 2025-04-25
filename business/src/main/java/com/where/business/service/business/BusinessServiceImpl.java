@@ -10,6 +10,8 @@ import com.where.business.entity.Business;
 import com.where.business.kafka.BusinessProducer;
 import com.where.business.repository.BusinessRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,11 @@ public class BusinessServiceImpl implements BusinessService{
             log.error("Error occurred while updating business status: {}", e.getMessage(), e);
             throw new BusinessException("Failed to update business status", e);
         }
+    }
+
+    @Override
+    public Page<Business> searchBusinessesByTerm(String searchTerm, Pageable pageable) {
+        return businessRepository.searchByTerm(searchTerm, pageable);
     }
 
     @Override

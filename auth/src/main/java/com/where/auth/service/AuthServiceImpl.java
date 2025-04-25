@@ -99,8 +99,6 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
 
-
-
     @Override
     public AppUser getUser(String email) {
         log.info("Fetching user {}",email);

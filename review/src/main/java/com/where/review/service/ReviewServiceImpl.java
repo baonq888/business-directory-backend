@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ReviewerRepository reviewerRepository;
 
     @Override
     public Review createReview(ReviewCreateRequest request) {

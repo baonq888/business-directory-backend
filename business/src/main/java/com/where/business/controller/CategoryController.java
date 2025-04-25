@@ -24,7 +24,7 @@ public class CategoryController {
     public ResponseEntity<Category> updateCategory(@PathVariable Long id,
                                                    @RequestBody CategoryRequest request) {
         Category updatedCategory = categoryService.updateCategory(id, request);
-        return ResponseEntity.ok(updatedCategory);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedCategory);
     }
 
 }

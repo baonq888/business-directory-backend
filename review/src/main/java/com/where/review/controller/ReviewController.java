@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/review")
+@RequestMapping("/api/v1/business/review")
 @RequiredArgsConstructor
 public class ReviewController {
 

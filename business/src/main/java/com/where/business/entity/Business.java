@@ -21,8 +21,7 @@ public class Business {
     private String districtName;
     private String cityName;
     private String countryName;
-    private String lat;
-    private String lon;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_info_id")
