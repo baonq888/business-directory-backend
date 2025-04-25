@@ -85,8 +85,13 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
         }
 
         token = token.substring(BEARER_PREFIX.length());
+
         if (!jwtUtil.isTokenValid(token)) {
-            throw new AuthenticationException("Invalid or expired JWT token", HttpStatus.UNAUTHORIZED);
+            if (jwtUtil.isTokenExpired(token)) {
+                throw new AuthenticationException("JWT token has expired", HttpStatus.UNAUTHORIZED);
+            } else {
+                throw new AuthenticationException("Invalid JWT token", HttpStatus.UNAUTHORIZED);
+            }
         }
 
         return token;

@@ -1,51 +1,51 @@
 package com.where.gateway.utils;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.where.enums.JwtSecret;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 
 @Component
 public class JwtUtil {
     private static final String SECRET_KEY = JwtSecret.SECRET_KEY.getKey();
 
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+    private Algorithm getAlgorithm() {
+        return Algorithm.HMAC256(SECRET_KEY.getBytes());
+    }
+
+    private DecodedJWT decodeToken(String token) {
+        JWTVerifier verifier = JWT.require(getAlgorithm()).build();
+        return verifier.verify(token);
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return decodeToken(token).getSubject();
     }
 
     public List<String> extractRoles(String token) {
-        return extractClaim(token, claims -> (List<String>) claims.get("roles"));
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return decodeToken(token).getClaim("roles").asList(String.class);
     }
 
     public boolean isTokenValid(String token) {
-        return extractUsername(token) != null && !isTokenExpired(token);
+        try {
+            decodeToken(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            DecodedJWT decodedJWT = decodeToken(token);
+            return decodedJWT.getExpiresAt().before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
     }
 }

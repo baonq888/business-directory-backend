@@ -44,8 +44,7 @@ public class CategoryTest {
         Long createdCategoryId = response.jsonPath().getLong("id");
 
         // Save the created category to the EntityContext
-        Category createdCategory = response.as(Category.class);
-        EntityContext.put("categoryId", createdCategoryId);
+        EntityContext.add("categoryId", createdCategoryId);
     }
 
     @Test

@@ -91,11 +91,11 @@ public class AuthTest {
             String refreshToken = response.jsonPath().getString("refresh_token");
 
             if (email.equals("admin@example.com")) {
-                TokenContext.put("admin_access_token", accessToken);
-                TokenContext.put("admin_refresh_token", refreshToken);
+                TokenContext.add("admin_access_token", accessToken);
+                TokenContext.add("admin_refresh_token", refreshToken);
             } else {
-                TokenContext.put("access_token", accessToken);
-                TokenContext.put("refresh_token", refreshToken);
+                TokenContext.add("access_token", accessToken);
+                TokenContext.add("refresh_token", refreshToken);
             }
         }
     }

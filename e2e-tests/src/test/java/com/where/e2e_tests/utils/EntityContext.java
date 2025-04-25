@@ -7,7 +7,7 @@ public class EntityContext {
     private static final Map<String, Object> store = new HashMap<>();
 
     // Save entity with a custom key
-    public static <T> void put(String key, T value) {
+    public static <T> void add(String key, T value) {
         store.put(key, value);
     }
 
@@ -16,13 +16,4 @@ public class EntityContext {
         return (T) store.get(key);
     }
 
-    // Remove specific entity by key
-    public static void remove(String key) {
-        store.remove(key);
-    }
-
-    // Clear everything
-    public static void clear() {
-        store.clear();
-    }
 }

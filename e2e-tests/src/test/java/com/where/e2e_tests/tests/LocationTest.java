@@ -63,9 +63,9 @@ public class LocationTest {
         String districtName = response.getString("name[0]");
         String cityName =  response.getString("adminName1[0]");
         String countryName = response.getString("countryName[0]");
-        EntityContext.put("districtName", districtName);
-        EntityContext.put("cityName", cityName);
-        EntityContext.put("countryName", countryName);
+        EntityContext.add("districtName", districtName);
+        EntityContext.add("cityName", cityName);
+        EntityContext.add("countryName", countryName);
     }
 
 
