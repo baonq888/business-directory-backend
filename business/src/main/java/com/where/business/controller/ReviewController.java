@@ -1,9 +1,8 @@
-package com.where.review.controller;
+package com.where.business.controller;
 
-import com.where.review.dto.request.ReviewCreateRequest;
-import com.where.review.entity.Review;
-import com.where.review.exception.ReviewException;
-import com.where.review.service.ReviewService;
+import com.where.business.dto.request.ReviewCreateRequest;
+import com.where.business.entity.Review;
+import com.where.business.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

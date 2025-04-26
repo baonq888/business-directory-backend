@@ -1,4 +1,4 @@
-package com.where.review.entity;
+package com.where.business.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

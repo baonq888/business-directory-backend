@@ -1,4 +1,4 @@
-package com.where.review.dto.request;
+package com.where.business.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

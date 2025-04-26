@@ -1,5 +1,4 @@
-package com.where.review.entity;
-
+package com.where.business.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

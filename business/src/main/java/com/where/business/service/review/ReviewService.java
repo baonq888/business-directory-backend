@@ -1,10 +1,9 @@
-package com.where.review.service;
+package com.where.business.service.review;
 
-import com.where.review.dto.request.ReviewCreateRequest;
-import com.where.review.entity.Review;
+
+import com.where.business.dto.request.ReviewCreateRequest;
+import com.where.business.entity.Review;
 import org.springframework.data.domain.Page;
-
-import java.util.Optional;
 
 public interface ReviewService {
     Review createReview(ReviewCreateRequest request);

@@ -1,11 +1,10 @@
-package com.where.review.service;
+package com.where.business.service.review;
 
-import com.where.review.dto.request.ReviewCreateRequest;
-import com.where.review.entity.Review;
-import com.where.review.entity.Reviewer;
-import com.where.review.exception.ReviewException;
-import com.where.review.repository.ReviewRepository;
-import com.where.review.repository.ReviewerRepository;
+import com.where.business.dto.request.ReviewCreateRequest;
+import com.where.business.entity.Review;
+import com.where.business.entity.Reviewer;
+import com.where.business.exception.ReviewException;
+import com.where.business.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
 
 import jakarta.persistence.EntityNotFoundException;

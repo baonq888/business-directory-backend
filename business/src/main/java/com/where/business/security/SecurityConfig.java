@@ -28,7 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/business/category/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/business/{id}").hasAnyRole(Role.BUSINESS_OWNER.name())
                         .requestMatchers(HttpMethod.PATCH, "/business/{id}").hasRole(Role.ADMIN.name())
-                        .requestMatchers("/business/**").hasAnyRole(Role.USER.name(), Role.BUSINESS_OWNER.name(), Role.ADMIN.name())
+                        .requestMatchers("/business/review/**").hasRole(Role.USER.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,7 +1,7 @@
-package com.where.review.repository;
+package com.where.business.repository;
 
-import com.where.review.entity.Review;
-import com.where.review.entity.Reviewer;
+import com.where.business.entity.Review;
+import com.where.business.entity.Reviewer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {

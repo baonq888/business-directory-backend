@@ -1,4 +1,4 @@
-package com.where.review.repository;
+package com.where.business.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

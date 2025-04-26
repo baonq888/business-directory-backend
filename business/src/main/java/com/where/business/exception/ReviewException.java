@@ -1,4 +1,4 @@
-package com.where.review.exception;
+package com.where.business.exception;
 
 public class ReviewException extends RuntimeException {
     public ReviewException(String message) {
