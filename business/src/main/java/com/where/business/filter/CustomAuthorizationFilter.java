@@ -48,9 +48,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (jwtUtil.isTokenValid(token)) {
             try {
                 String username = jwtUtil.extractUsername(token);
-                List<String> roles = jwtUtil.extractRoles(token); // Assuming roles are stored as a list in JWT
-                log.info("Roles", roles.get(0));
-                // Convert roles into Spring Security authorities
+                List<String> roles = jwtUtil.extractRoles(token);
+
                 List<GrantedAuthority> authorities = roles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                         .collect(Collectors.toList());

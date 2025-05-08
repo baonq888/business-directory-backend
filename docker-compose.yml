@@ -49,13 +49,13 @@ services:
     networks:
       - microservices-net
 
-#  zipkin:
-#    container_name: where-zipkin
-#    image: openzipkin/zipkin
-#    ports:
-#      - "9411:9411"
-#    networks:
-#      - microservices-net
+  zipkin:
+    container_name: where-zipkin
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - microservices-net
 
   redis:
     container_name: where-redis
@@ -87,5 +87,3 @@ networks:
 
 volumes:
   db:
-  pgadmin:
-  elasticsearch:
