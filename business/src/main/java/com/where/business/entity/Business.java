@@ -9,6 +9,14 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        name = "business",
+        indexes = {
+                @Index(name = "idx_business_name", columnList = "name"),
+                @Index(name = "idx_business_district", columnList = "districtName"),
+                @Index(name = "idx_business_city", columnList = "cityName"),
+        }
+)
 public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
